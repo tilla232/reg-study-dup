@@ -1,7 +1,7 @@
 import pandas as pd
 
-df = pd.read_csv('../data/Train.csv')
-print(df.columns)
+# df = pd.read_csv('../data/Train.csv')
+# print(df.columns)
 # _______________ COLUMN NAMES _______________________
 #'SalesID', 'SalePrice', 'MachineID', 'ModelID', 'datasource',
 #        'auctioneerID', 'YearMade', 'MachineHoursCurrentMeter', 'UsageBand',
@@ -21,12 +21,14 @@ print(df.columns)
 
 #____________ PRODUCT GROUPS _______________________
 #['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
-WL = df[df['ProductGroup'] == 'WL']
-SSL = df[df['ProductGroup'] == 'SSL']
-TEX = df[df['ProductGroup'] == 'TEX']
-BL = df[df['ProductGroup'] == 'BL']
-TTT = df[df['ProductGroup'] == 'TTT']
-MG = df[df['ProductGroup'] == 'MG']
+def make_product_df(df):
+    WL = df[df['ProductGroup'] == 'WL']
+    SSL = df[df['ProductGroup'] == 'SSL']
+    TEX = df[df['ProductGroup'] == 'TEX']
+    BL = df[df['ProductGroup'] == 'BL']
+    TTT = df[df['ProductGroup'] == 'TTT']
+    MG = df[df['ProductGroup'] == 'MG']
+    return WL, SSL, TEX, BL, TTT, MG
 
 
 # total = WL.shape[0]+ SSL.shape[0] + TEX.shape[0] + BL.shape[0]+ TTT.shape[0] + MG.shape[0]
