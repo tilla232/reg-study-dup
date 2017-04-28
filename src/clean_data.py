@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv('../data/Train.csv')
 # print(df.columns)
@@ -22,6 +23,7 @@ df = pd.read_csv('../data/Train.csv')
 def mister_clean(df):
     ### superfluous object column
     df.drop('SalesID',axis=1,inplace=True)
+    df.drop('MachineID',axis=1,inplace=True)
     df.drop('fiModelDesc',axis=1,inplace=True)
     df.drop('Backhoe_Mounting',axis=1,inplace=True)
 
@@ -38,7 +40,8 @@ def mister_clean(df):
     df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '6' if x == '6.00E+00' else x)
     df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '-15' if x == '-1.50E+01' else x)
     df['fiModelSeries'] = df['fiModelSeries'].str.replace('.0','')
-    df = df.replace('None or Unspecified', np.nan, inplace=True)
+    df['auctioneerID'] = df['auctioneerID'].astype(str)
+    df.replace('None or Unspecified', np.nan, inplace=True)
     return df
 
     # ### these will be for if we want to subset our data with the non-nulls;
@@ -67,6 +70,11 @@ def make_dummies(col):
 
 make_dummies(df['Ride_Control'])
 make_dummies(df['Forks'])
+
+def get_dummies(df)
+    df_dummies = pd.get_dummies(df)
+    return df_dummies
+
 
 def delete_empty_columns(lst):
     for product in lst:
