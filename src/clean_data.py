@@ -1,9 +1,11 @@
 import numpy as np
 import pandas as pd
 
+
 df = pd.read_csv('../data/Train.csv')
-# print(df.columns)
-# _______________ COLUMN NAMES _______________________
+#print(df.columns)
+
+
 # 'SalesID', 'SalePrice', 'MachineID', 'ModelID', 'datasource',
 #        'auctioneerID', 'YearMade', 'MachineHoursCurrentMeter', 'UsageBand',
 #        'saledate', 'fiModelDesc', 'fiBaseModel', 'fiSecondaryDesc',
@@ -19,11 +21,31 @@ df = pd.read_csv('../data/Train.csv')
 #        'Travel_Controls', 'Differential_Type', 'Steering_Controls'],
 #       dtype='object'
 
+
+
+def n_uniques(lst, names):
+    '''
+    lst = [WL, SSL, TEX, BL, TTT, MG]
+    names = ['WL', 'SSL', 'TEX', 'BL', 'TTT', 'MG']
+    '''
+    for i, product in enumerate(lst):
+        print('\n{0}: '.format(names[i]))
+        for col in product.columns:
+            print('{0}: '.format(col), product[col].nunique())
+
+def replace_null(df):
+    df.replace('None or Unspecified', np.nan, inplace=True)
+
+### superfluous object column
+df.drop('fiModelDesc',axis=1,inplace=True)
+df.drop('Backhoe_Mounting',axis=1,inplace=True)
+
 def mister_clean(df):
     ### superfluous object column
     df.drop('SalesID',axis=1,inplace=True)
     df.drop('fiModelDesc',axis=1,inplace=True)
     df.drop('Backhoe_Mounting',axis=1,inplace=True)
+
 
     ### clean string values
     df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: np.nan if x == '#NAME?' else x)
@@ -77,6 +99,32 @@ def make_dummies(col):
 make_dummies(df['Ride_Control'])
 make_dummies(df['Forks'])
 
+
+
+#____________ PRODUCT GROUPS _______________________
+#['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
+
+replace_null(df)
+
+WL = df[df['ProductGroup'] == 'WL']
+SSL = df[df['ProductGroup'] == 'SSL']
+TEX = df[df['ProductGroup'] == 'TEX']
+BL = df[df['ProductGroup'] == 'BL']
+TTT = df[df['ProductGroup'] == 'TTT']
+MG = df[df['ProductGroup'] == 'MG']
+
+
+def n_uniques(lst, names):
+    '''
+    lst = [WL, SSL, TEX, BL, TTT, MG]
+    names = ['WL', 'SSL', 'TEX', 'BL', 'TTT', 'MG']
+    '''
+    for i, product in enumerate(lst):
+        print('\n{0}: '.format(names[i]))
+        for col in product.columns:
+            print('{0}: '.format(col), product[col].nunique())
+
+
 def delete_empty_columns(lst):
     for product in lst:
         for col in product.columns:
@@ -84,3 +132,5 @@ def delete_empty_columns(lst):
                 product.drop(col, inplace=True, axis=1)
             elif product[col].nunique() == 1:
                 product.drop(col, inplace=True, axis=1)
+lst = [WL, SSL, TEX, BL, TTT, MG]
+delete_empty_columns(lst)

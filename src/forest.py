@@ -8,5 +8,3 @@ if __name__ == '__main__':
     cd.mister_clean(df)
     WL,SSL,TEX,BL,TTT,MG = cd.split_groups(df)
     cd.delete_empty_columns([WL, SSL, TEX, BL, TTT, MG])
-
-    
