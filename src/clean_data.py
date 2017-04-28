@@ -49,6 +49,15 @@ def mister_clean(df):
     # df_meter = df[df['MachineHoursCurrentMeter'].notnull()]
     # df_band = df[df['UsageBand'].notnull()]
     # df_series = df[df['fiModelSeries'].notnull()]
+def AC(df):
+    ac = np.array([1 if row == 'EROPS w AC' or row == 'EROPS AC' else 0 for row in df['Enclosure']])
+    df['AC'] = ac
+    erops = np.array([1 if row=='EROPS w AC' or row == 'EROPS AC' else 0 for row in df['Enclosure']])
+    orops = np.array([1 if row=='OROPS' else 0 for row in df['Enclosure']])
+    df['EROPS'] = erops
+    df['OROPS'] = orops
+    df.drop('Enclosure', axis=1, inplace=True)
+    return df
 
 def split_groups(df):
     #____________ PRODUCT GROUPS _______________________
