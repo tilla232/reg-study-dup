@@ -1,7 +1,9 @@
 import pandas as pd
 
+
 df = pd.read_csv('../data/Train.csv')
 #print(df.columns)
+
 # _______________ COLUMN NAMES _______________________
 #'SalesID', 'SalePrice', 'MachineID', 'ModelID', 'datasource',
 #        'auctioneerID', 'YearMade', 'MachineHoursCurrentMeter', 'UsageBand',
@@ -48,8 +50,6 @@ df_series = df[df['fiModelSeries'].notnull()]
 #____________ PRODUCT GROUPS _______________________
 #['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
 
-
-
 WL = df[df['ProductGroup'] == 'WL']
 SSL = df[df['ProductGroup'] == 'SSL']
 TEX = df[df['ProductGroup'] == 'TEX']
@@ -58,9 +58,23 @@ TTT = df[df['ProductGroup'] == 'TTT']
 MG = df[df['ProductGroup'] == 'MG']
 
 
+def n_uniques(lst, names):
+    '''
+    lst = [WL, SSL, TEX, BL, TTT, MG]
+    names = ['WL', 'SSL', 'TEX', 'BL', 'TTT', 'MG']
+    '''
+    for i, product in enumerate(lst):
+        print('\n{0}: '.format(names[i]))
+        for col in product.columns:
+            print('{0}: '.format(col), product[col].nunique())
 
+def delete_empty_columns(lst):
+    for product in lst:
+        for col in product.columns:
+            if product[col].nunique() == 0:
+                product.drop(col, inplace=True, axis=1)
+            elif product[col].nunique() == 1:
+                product.drop(col, inplace=True, axis=1)
 
-# print(WL[['Turbocharged', 'Blade_Extension', 'Blade_Width','Enclosure_Type','Engine_Horsepower','Hydraulics','Pushblock','Ripper', 'Scarifier', 'Tip_Control', 'Tire_Size', 'Coupler', 'Coupler_System']])
-for p in [WL, SSL, TEX, BL, TTT, MG]:
-    for col in WL.columns:
-        print(col.count_values)
+def replace_null(df):
+    df.replace('None or Unspecified', np.nan, inplace=True)
