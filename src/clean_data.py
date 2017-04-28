@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 df = pd.read_csv('../data/Train.csv')
-print(df.columns)
+# print(df.columns)
 # _______________ COLUMN NAMES _______________________
 # 'SalesID', 'SalePrice', 'MachineID', 'ModelID', 'datasource',
 #        'auctioneerID', 'YearMade', 'MachineHoursCurrentMeter', 'UsageBand',
@@ -53,7 +53,6 @@ def mister_clean(df):
 def split_groups(df):
     #____________ PRODUCT GROUPS _______________________
     #['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
-
     WL = df[df['ProductGroup'] == 'WL']
     SSL = df[df['ProductGroup'] == 'SSL']
     TEX = df[df['ProductGroup'] == 'TEX']
@@ -61,6 +60,13 @@ def split_groups(df):
     TTT = df[df['ProductGroup'] == 'TTT']
     MG = df[df['ProductGroup'] == 'MG']
     return WL,SSL,TEX,BL,TTT,MG
+
+def make_dummies(col):
+    df.replace('Yes', 1, inplace=True)
+    df.replace('No', 0, inplace=True)
+
+make_dummies(df['Ride_Control'])
+make_dummies(df['Forks'])
 
 def delete_empty_columns(lst):
     for product in lst:
