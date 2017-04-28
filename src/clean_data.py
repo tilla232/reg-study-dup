@@ -1,9 +1,10 @@
+import numpy as np
 import pandas as pd
 
-# df = pd.read_csv('../data/Train.csv')
-# print(df.columns)
+df = pd.read_csv('../data/Train.csv')
+print(df.columns)
 # _______________ COLUMN NAMES _______________________
-#'SalesID', 'SalePrice', 'MachineID', 'ModelID', 'datasource',
+# 'SalesID', 'SalePrice', 'MachineID', 'ModelID', 'datasource',
 #        'auctioneerID', 'YearMade', 'MachineHoursCurrentMeter', 'UsageBand',
 #        'saledate', 'fiModelDesc', 'fiBaseModel', 'fiSecondaryDesc',
 #        'fiModelSeries', 'fiModelDescriptor', 'ProductSize',
@@ -23,13 +24,13 @@ df.drop('fiModelDesc',axis=1,inplace=True)
 df.drop('Backhoe_Mounting',axis=1,inplace=True)
 
 ### clean string values
-df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: None if x == '#NAME?' else x)
+df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: np.nan if x == '#NAME?' else x)
 df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'B' if x == 'B     ' else x)
 df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'M' if x == 'M      ' else x)
 df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'C' if x == 'C      ' else x)
 df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'H' if x == 'H      ' else x)
 df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'MSR SPIN ACE' if x == ' MSR SPIN ACE' else x)
-df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: None if x == '#NAME?' else x)
+df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: np.nan if x == '#NAME?' else x)
 df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: 'II' if x == 'SeriesII' else x)
 df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '7' if x == '7.00E+00' else x)
 df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '6' if x == '6.00E+00' else x)
