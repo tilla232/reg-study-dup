@@ -47,13 +47,31 @@ df_series = df[df['fiModelSeries'].notnull()]
 #____________ PRODUCT GROUPS _______________________
 #['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
 
-# total = WL.shape[0]+ SSL.shape[0] + TEX.shape[0] + BL.shape[0]+ TTT.shape[0] + MG.shape[0]
-# print(total)
-=======
 WL = df[df['ProductGroup'] == 'WL']
 SSL = df[df['ProductGroup'] == 'SSL']
 TEX = df[df['ProductGroup'] == 'TEX']
 BL = df[df['ProductGroup'] == 'BL']
 TTT = df[df['ProductGroup'] == 'TTT']
 MG = df[df['ProductGroup'] == 'MG']
->>>>>>> b4350c7b7587b8905983a3fb9801443010127977
+
+
+def n_uniques(lst, names):
+    '''
+    lst = [WL, SSL, TEX, BL, TTT, MG]
+    names = ['WL', 'SSL', 'TEX', 'BL', 'TTT', 'MG']
+    '''
+    for i, product in enumerate(lst):
+        print('\n{0}: '.format(names[i]))
+        for col in product.columns:
+            print('{0}: '.format(col), product[col].nunique())
+
+def delete_empty_columns(lst):
+    for product in lst:
+        for col in product.columns:
+            if product[col].nunique() == 0:
+                product.drop(col, inplace=True, axis=1)
+            elif product[col].nunique() == 1:
+                product.drop(col, inplace=True, axis=1)
+
+def replace_null(df):
+    df.replace('None or Unspecified', np.nan, inplace=True)
