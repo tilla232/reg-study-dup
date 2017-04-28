@@ -61,6 +61,7 @@ def mister_clean(df):
     df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '-15' if x == '-1.50E+01' else x)
     df['fiModelSeries'] = df['fiModelSeries'].str.replace('.0','')
     df = df.replace('None or Unspecified', np.nan, inplace=True)
+    AC(df)
     return df
 
     # ### these will be for if we want to subset our data with the non-nulls;
