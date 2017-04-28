@@ -20,6 +20,7 @@ df = pd.read_csv('../data/Train.csv')
 
 ### superfluous object column
 df.drop('fiModelDesc',axis=1,inplace=True)
+df.drop('Backhoe_Mounting',axis=1,inplace=True)
 
 ### clean string values
 df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: None if x == '#NAME?' else x)
@@ -59,4 +60,7 @@ MG = df[df['ProductGroup'] == 'MG']
 
 
 
-#df[['Turbocharged', 'Blade_Extension', 'Blade_Width','Enclosure_Type','Engine_Horsepower','Hydraulics','Pushblock','Ripper', 'Scarifier', 'Tip_Control', 'Tire_Size', 'Coupler', 'Coupler_System']]
+# print(WL[['Turbocharged', 'Blade_Extension', 'Blade_Width','Enclosure_Type','Engine_Horsepower','Hydraulics','Pushblock','Ripper', 'Scarifier', 'Tip_Control', 'Tire_Size', 'Coupler', 'Coupler_System']])
+for p in [WL, SSL, TEX, BL, TTT, MG]:
+    for col in WL.columns:
+        print(col.count_values)
