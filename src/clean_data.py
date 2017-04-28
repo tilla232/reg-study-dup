@@ -39,13 +39,13 @@ def replace_null(df):
 ### superfluous object column
 df.drop('fiModelDesc',axis=1,inplace=True)
 df.drop('Backhoe_Mounting',axis=1,inplace=True)
-=======
+
 def mister_clean(df):
     ### superfluous object column
     df.drop('SalesID',axis=1,inplace=True)
     df.drop('fiModelDesc',axis=1,inplace=True)
     df.drop('Backhoe_Mounting',axis=1,inplace=True)
->>>>>>> a9d978a723067768528188438a110a08b4ccdaa5
+
 
     ### clean string values
     df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: np.nan if x == '#NAME?' else x)
@@ -90,7 +90,7 @@ def make_dummies(col):
 make_dummies(df['Ride_Control'])
 make_dummies(df['Forks'])
 
-<<<<<<< HEAD
+
 
 #____________ PRODUCT GROUPS _______________________
 #['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
