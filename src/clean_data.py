@@ -64,6 +64,8 @@ def mister_clean(df):
     df['fiModelSeries'] = df['fiModelSeries'].str.replace('.0','')
     df['auctioneerID'] = df['auctioneerID'].astype(str)
     df.replace('None or Unspecified', np.nan, inplace=True)
+    df = df.replace('None or Unspecified', np.nan, inplace=True)
+    AC(df)
     return df
 
     # ### these will be for if we want to subset our data with the non-nulls;
@@ -102,11 +104,9 @@ def make_dummies(col):
 make_dummies(df['Ride_Control'])
 make_dummies(df['Forks'])
 
-<<<<<<< HEAD
 def get_dummies(df)
     df_dummies = pd.get_dummies(df)
     return df_dummies
-=======
 
 
 #____________ PRODUCT GROUPS _______________________
@@ -131,7 +131,6 @@ def n_uniques(lst, names):
         print('\n{0}: '.format(names[i]))
         for col in product.columns:
             print('{0}: '.format(col), product[col].nunique())
->>>>>>> a6de09b6d087322647873a5a865710f07256f631
 
 
 def delete_empty_columns(lst):
