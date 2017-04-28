@@ -6,7 +6,6 @@ df = pd.read_csv('../data/Train.csv')
 #print(df.columns)
 
 
-# _______________ COLUMN NAMES _______________________
 # 'SalesID', 'SalePrice', 'MachineID', 'ModelID', 'datasource',
 #        'auctioneerID', 'YearMade', 'MachineHoursCurrentMeter', 'UsageBand',
 #        'saledate', 'fiModelDesc', 'fiBaseModel', 'fiSecondaryDesc',
@@ -33,14 +32,6 @@ def n_uniques(lst, names):
         print('\n{0}: '.format(names[i]))
         for col in product.columns:
             print('{0}: '.format(col), product[col].nunique())
-
-def delete_empty_columns(lst):
-    for product in lst:
-        for col in product.columns:
-            if product[col].nunique() == 0:
-                product.drop(col, inplace=True, axis=1)
-            elif product[col].nunique() == 1:
-                product.drop(col, inplace=True, axis=1)
 
 def replace_null(df):
     df.replace('None or Unspecified', np.nan, inplace=True)
@@ -72,6 +63,18 @@ df_meter = df[df['MachineHoursCurrentMeter'].notnull()]
 df_band = df[df['UsageBand'].notnull()]
 df_series = df[df['fiModelSeries'].notnull()]
 
+def replace_null(df):
+    df.replace('None or Unspecified', np.nan, inplace=True)
+
+def make_dummies(col):
+    df.replace('Yes', 1, inplace=True)
+    df.replace('No', 0, inplace=True)
+
+replace_null(df)
+make_dummies(df['Ride_Control'])
+make_dummies(df['Forks'])
+
+
 #____________ PRODUCT GROUPS _______________________
 #['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
 
@@ -84,6 +87,23 @@ BL = df[df['ProductGroup'] == 'BL']
 TTT = df[df['ProductGroup'] == 'TTT']
 MG = df[df['ProductGroup'] == 'MG']
 
+
+def n_uniques(lst, names):
+    '''
+    lst = [WL, SSL, TEX, BL, TTT, MG]
+    names = ['WL', 'SSL', 'TEX', 'BL', 'TTT', 'MG']
+    '''
+    for i, product in enumerate(lst):
+        print('\n{0}: '.format(names[i]))
+        for col in product.columns:
+            print('{0}: '.format(col), product[col].nunique())
+
+def delete_empty_columns(lst):
+    for product in lst:
+        for col in product.columns:
+            if product[col].nunique() == 0:
+                product.drop(col, inplace=True, axis=1)
+            elif product[col].nunique() == 1:
+                product.drop(col, inplace=True, axis=1)
 lst = [WL, SSL, TEX, BL, TTT, MG]
-names = ['SSL']
 delete_empty_columns(lst)
