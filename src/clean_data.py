@@ -2,9 +2,11 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
+
 df = pd.read_csv('../data/Train.csv')
-# print(df.columns)
-# _______________ COLUMN NAMES _______________________
+#print(df.columns)
+
+
 # 'SalesID', 'SalePrice', 'MachineID', 'ModelID', 'datasource',
 #        'auctioneerID', 'YearMade', 'MachineHoursCurrentMeter', 'UsageBand',
 #        'saledate', 'fiModelDesc', 'fiBaseModel', 'fiSecondaryDesc',
@@ -20,12 +22,32 @@ df = pd.read_csv('../data/Train.csv')
 #        'Travel_Controls', 'Differential_Type', 'Steering_Controls'],
 #       dtype='object'
 
+
+
+def n_uniques(lst, names):
+    '''
+    lst = [WL, SSL, TEX, BL, TTT, MG]
+    names = ['WL', 'SSL', 'TEX', 'BL', 'TTT', 'MG']
+    '''
+    for i, product in enumerate(lst):
+        print('\n{0}: '.format(names[i]))
+        for col in product.columns:
+            print('{0}: '.format(col), product[col].nunique())
+
+def replace_null(df):
+    df.replace('None or Unspecified', np.nan, inplace=True)
+
+### superfluous object column
+df.drop('fiModelDesc',axis=1,inplace=True)
+df.drop('Backhoe_Mounting',axis=1,inplace=True)
+
 def mister_clean(df):
     ### superfluous object column
     df.drop('SalesID',axis=1,inplace=True)
     df.drop('MachineID',axis=1,inplace=True)
     df.drop('fiModelDesc',axis=1,inplace=True)
     df.drop('Backhoe_Mounting',axis=1,inplace=True)
+
 
     ### clean string values
     df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: np.nan if x == '#NAME?' else x)
@@ -52,6 +74,15 @@ def mister_clean(df):
     # df_meter = df[df['MachineHoursCurrentMeter'].notnull()]
     # df_band = df[df['UsageBand'].notnull()]
     # df_series = df[df['fiModelSeries'].notnull()]
+def AC(df):
+    ac = np.array([1 if row == 'EROPS w AC' or row == 'EROPS AC' else 0 for row in df['Enclosure']])
+    df['AC'] = ac
+    erops = np.array([1 if row=='EROPS w AC' or row == 'EROPS AC' else 0 for row in df['Enclosure']])
+    orops = np.array([1 if row=='OROPS' else 0 for row in df['Enclosure']])
+    df['EROPS'] = erops
+    df['OROPS'] = orops
+    df.drop('Enclosure', axis=1, inplace=True)
+    return df
 
 def split_groups(df):
     #____________ PRODUCT GROUPS _______________________
@@ -71,9 +102,36 @@ def make_dummies(col):
 make_dummies(df['Ride_Control'])
 make_dummies(df['Forks'])
 
+<<<<<<< HEAD
 def get_dummies(df)
     df_dummies = pd.get_dummies(df)
     return df_dummies
+=======
+
+
+#____________ PRODUCT GROUPS _______________________
+#['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
+
+replace_null(df)
+
+WL = df[df['ProductGroup'] == 'WL']
+SSL = df[df['ProductGroup'] == 'SSL']
+TEX = df[df['ProductGroup'] == 'TEX']
+BL = df[df['ProductGroup'] == 'BL']
+TTT = df[df['ProductGroup'] == 'TTT']
+MG = df[df['ProductGroup'] == 'MG']
+
+
+def n_uniques(lst, names):
+    '''
+    lst = [WL, SSL, TEX, BL, TTT, MG]
+    names = ['WL', 'SSL', 'TEX', 'BL', 'TTT', 'MG']
+    '''
+    for i, product in enumerate(lst):
+        print('\n{0}: '.format(names[i]))
+        for col in product.columns:
+            print('{0}: '.format(col), product[col].nunique())
+>>>>>>> a6de09b6d087322647873a5a865710f07256f631
 
 
 def delete_empty_columns(lst):
@@ -83,3 +141,5 @@ def delete_empty_columns(lst):
                 product.drop(col, inplace=True, axis=1)
             elif product[col].nunique() == 1:
                 product.drop(col, inplace=True, axis=1)
+lst = [WL, SSL, TEX, BL, TTT, MG]
+delete_empty_columns(lst)
