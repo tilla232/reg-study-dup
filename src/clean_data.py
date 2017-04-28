@@ -39,41 +39,58 @@ def replace_null(df):
 ### superfluous object column
 df.drop('fiModelDesc',axis=1,inplace=True)
 df.drop('Backhoe_Mounting',axis=1,inplace=True)
+=======
+def mister_clean(df):
+    ### superfluous object column
+    df.drop('SalesID',axis=1,inplace=True)
+    df.drop('fiModelDesc',axis=1,inplace=True)
+    df.drop('Backhoe_Mounting',axis=1,inplace=True)
+>>>>>>> a9d978a723067768528188438a110a08b4ccdaa5
 
-### clean string values
-df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: np.nan if x == '#NAME?' else x)
-df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'B' if x == 'B     ' else x)
-df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'M' if x == 'M      ' else x)
-df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'C' if x == 'C      ' else x)
-df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'H' if x == 'H      ' else x)
-df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'MSR SPIN ACE' if x == ' MSR SPIN ACE' else x)
-df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: np.nan if x == '#NAME?' else x)
-df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: 'II' if x == 'SeriesII' else x)
-df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '7' if x == '7.00E+00' else x)
-df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '6' if x == '6.00E+00' else x)
-df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '-15' if x == '-1.50E+01' else x)
-df['fiModelSeries'] = df['fiModelSeries'].str.replace('.0','')
+    ### clean string values
+    df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: np.nan if x == '#NAME?' else x)
+    df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'B' if x == 'B     ' else x)
+    df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'M' if x == 'M      ' else x)
+    df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'C' if x == 'C      ' else x)
+    df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'H' if x == 'H      ' else x)
+    df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: 'MSR SPIN ACE' if x == ' MSR SPIN ACE' else x)
+    df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: np.nan if x == '#NAME?' else x)
+    df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: 'II' if x == 'SeriesII' else x)
+    df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '7' if x == '7.00E+00' else x)
+    df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '6' if x == '6.00E+00' else x)
+    df['fiModelSeries'] = df['fiModelSeries'].apply(lambda x: '-15' if x == '-1.50E+01' else x)
+    df['fiModelSeries'] = df['fiModelSeries'].str.replace('.0','')
+    df = df.replace('None or Unspecified', np.nan, inplace=True)
+    return df
 
-### these will be for if we want to subset our data with the non-nulls;
-### if the prediction rate for the non-nulls isn't affected,
-### we can just outright drop the column
+    # ### these will be for if we want to subset our data with the non-nulls;
+    # ### if the prediction rate for the non-nulls isn't affected,
+    # ### we can just outright drop the column
+    #
+    # df_neers = df[df['auctioneerID'].notnull()]
+    # df_meter = df[df['MachineHoursCurrentMeter'].notnull()]
+    # df_band = df[df['UsageBand'].notnull()]
+    # df_series = df[df['fiModelSeries'].notnull()]
 
-df_neers = df[df['auctioneerID'].notnull()]
-df_meter = df[df['MachineHoursCurrentMeter'].notnull()]
-df_band = df[df['UsageBand'].notnull()]
-df_series = df[df['fiModelSeries'].notnull()]
-
-def replace_null(df):
-    df.replace('None or Unspecified', np.nan, inplace=True)
+def split_groups(df):
+    #____________ PRODUCT GROUPS _______________________
+    #['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
+    WL = df[df['ProductGroup'] == 'WL']
+    SSL = df[df['ProductGroup'] == 'SSL']
+    TEX = df[df['ProductGroup'] == 'TEX']
+    BL = df[df['ProductGroup'] == 'BL']
+    TTT = df[df['ProductGroup'] == 'TTT']
+    MG = df[df['ProductGroup'] == 'MG']
+    return WL,SSL,TEX,BL,TTT,MG
 
 def make_dummies(col):
     df.replace('Yes', 1, inplace=True)
     df.replace('No', 0, inplace=True)
 
-replace_null(df)
 make_dummies(df['Ride_Control'])
 make_dummies(df['Forks'])
 
+<<<<<<< HEAD
 
 #____________ PRODUCT GROUPS _______________________
 #['WL' 'SSL' 'TEX' 'BL' 'TTT' 'MG']
@@ -97,6 +114,7 @@ def n_uniques(lst, names):
         print('\n{0}: '.format(names[i]))
         for col in product.columns:
             print('{0}: '.format(col), product[col].nunique())
+
 
 def delete_empty_columns(lst):
     for product in lst:
