@@ -20,6 +20,7 @@ print(df.columns)
 
 ### superfluous object column
 df.drop('fiModelDesc',axis=1,inplace=True)
+df.drop('Backhoe_Mounting',axis=1,inplace=True)
 
 ### clean string values
 df['fiSecondaryDesc'] = df['fiSecondaryDesc'].apply(lambda x: None if x == '#NAME?' else x)
